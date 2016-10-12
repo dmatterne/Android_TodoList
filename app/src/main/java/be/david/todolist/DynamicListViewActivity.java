@@ -1,5 +1,7 @@
 package be.david.todolist;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DynamicListViewActivity extends AppCompatActivity {
 
@@ -22,6 +27,8 @@ public class DynamicListViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_list_view);
 
@@ -29,7 +36,7 @@ public class DynamicListViewActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.itemEditButton);
         listView = (ListView) findViewById(R.id.itemsListView);
 
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         adapter = new ArrayAdapter<String>(DynamicListViewActivity.this,android.R.layout.simple_list_item_1, list);
 
         listView.setAdapter(adapter);
@@ -59,6 +66,51 @@ public class DynamicListViewActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        saveList(list);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        this.list.clear();
+        this.list.addAll(loadList());
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public ArrayList<String> loadList () {
+
+        ArrayList<String> list = new ArrayList<>();
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        list.addAll(sharedPref.getStringSet("Todo",new HashSet<String>()));
+
+        return list;
+
+    }
+
+    public void saveList(ArrayList<String> list) {
+
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        Set<String> values = new HashSet<>();
+
+        values.addAll(list);
+
+        editor.putStringSet("Todo", values);
+
+        editor.commit();
 
     }
 }
