@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.Set;
 public class DynamicListViewActivity extends AppCompatActivity {
 
     private EditText editText;
-    private Button button;
+    private ImageButton button;
     private ListView listView;
     private ArrayList<String> list;
     private ArrayAdapter<String> adapter;
@@ -33,7 +35,7 @@ public class DynamicListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dynamic_list_view);
 
         editText = (EditText) findViewById(R.id.itemEditText);
-        button = (Button) findViewById(R.id.itemEditButton);
+        button = (ImageButton) findViewById(R.id.add_item_button);
         listView = (ListView) findViewById(R.id.itemsListView);
 
         list = new ArrayList<>();
@@ -68,6 +70,13 @@ public class DynamicListViewActivity extends AppCompatActivity {
 
 
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        getMenuInflater().inflate(R.);
+//        return true;
+//    }
 
     @Override
     protected void onStop() {
